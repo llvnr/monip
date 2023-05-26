@@ -29,6 +29,66 @@ function Accueil(doc, options){
         }
     ContainerPrincipaleContent.append(cadreService)
 
+    let containerHTML = document.createElement('div')
+    containerHTML.classList.add('container__application-monip')
+
+        let ShellUALoadingUnHTML = document.createElement("div")
+        ShellUALoadingUnHTML.classList.add("ShellMNP__loading")
+        // ShellAuthLoadingUnHTML.style.display = "none"
+
+            let ShellUALoadingTitleUnHTML = document.createElement("div")
+            ShellUALoadingTitleUnHTML.classList.add("ShellMNP__loading-title")
+            ShellUALoadingTitleUnHTML.innerText = "Chargement de votre adresse ip..."
+            ShellUALoadingUnHTML.append(ShellUALoadingTitleUnHTML)
+
+            let ShellUALoadingLoaderUnHTML = document.createElement("div")
+            ShellUALoadingLoaderUnHTML.classList.add("ShellMNP__loading-loader")
+            ShellUALoadingUnHTML.append(ShellUALoadingLoaderUnHTML)
+
+        containerHTML.append(ShellUALoadingUnHTML)
+
+        checkIP()
+        .then(result => {
+    
+            // console.log(result)
+            let uuid = localStorage.getItem("_cc_uuid")
+
+            ShellUALoadingUnHTML.remove()
+
+            gtag('event', 'service_monip', {
+                'uuid': uuid
+            })
+
+            let ShellUACadreHTML = document.createElement("div")
+            ShellUACadreHTML.classList.add("ShellMNP__cadre-monip")
+            ShellUACadreHTML.innerText = result 
+            containerHTML.append(ShellUACadreHTML)
+    
+        })
+        .catch(err => {
+            alert(err)
+        })
+
+    ContainerPrincipaleContent.append(containerHTML)
+
+    async function checkIP(){
+
+        let tkn = localStorage.getItem("access_token")
+        let bearer = 'Bearer ' + tkn;
+
+        const response = await fetch('/api/monip/ip', {
+            method: "POST",
+            headers: {
+                'Authorization': bearer,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        });
+        const ip = await response.json();
+        return ip;
+
+    }
+
 }
 
 export default Accueil;

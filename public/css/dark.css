@@ -9,4 +9,8 @@
     --shellauth-load-card-border-top: 1px solid #F1F0F9;
     --cadre-service-background-color: #1A1A1A;
     --cadre-service-color: white;
+    /* APP */
+    --shellmnp-cadre-monip-border: white;
+    --shellmnp-cadre-monip-color: white;
+    /* APP */
 }
